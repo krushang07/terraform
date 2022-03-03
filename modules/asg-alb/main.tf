@@ -15,6 +15,7 @@ resource "aws_launch_configuration" "asg-launch-config-sample" {
 }
 
 resource "aws_security_group" "mysg" {
+
   name = "${var.cluster_name}-my-sg"
   ingress {
     from_port   = var.server_port
@@ -26,7 +27,7 @@ resource "aws_security_group" "mysg" {
 
 resource "aws_security_group" "elb-sg" {
   name = "${var.cluster_name}-elb-sg"
-  # Allow all outbound
+ # Allow all outbound
   egress {
     from_port   = 0
     to_port     = 0
@@ -63,6 +64,8 @@ resource "aws_elb" "sample" {
   name               = "${var.cluster_name}-asg-elb"
   security_groups    = [aws_security_group.elb-sg.id]
   availability_zones = data.aws_availability_zones.all.names
+
+
 
   health_check {
     target              = "HTTP:${var.server_port}/"
